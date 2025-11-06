@@ -316,10 +316,31 @@ async function renderGraph(data) {
     );
   }
 
+  const labelRenderer = (context, data, settings) => {
+    if (!data.label) return;
+
+    const fontSize =
+      typeof settings.labelSize === "function"
+        ? settings.labelSize(data)
+        : settings.labelSize;
+
+    context.fillStyle = "#ffffff";
+    context.font = `${settings.labelWeight} ${fontSize}px ${settings.labelFont}`;
+    context.textAlign = "center";
+    context.textBaseline = "bottom";
+    context.fillText(data.label, data.x, data.y - data.size - 6);
+  };
+
   sigmaRenderer = new SigmaCtor(graph, graphContainer, {
     renderEdgeLabels: true,
     minCameraRatio: 0.1,
     maxCameraRatio: 2,
+    defaultEdgeType: "arrow",
+    labelRenderer,
+    labelColor: { color: "#ffffff" },
+    labelSize: 14,
+    labelFont: "Inter, sans-serif",
+    labelWeight: "600",
   });
 }
 

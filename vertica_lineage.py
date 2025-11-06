@@ -406,6 +406,8 @@ def best_effort_scan(sql: str) -> str:
 
 def classify_statement(sql: str) -> StatementType:
     upper = sql.strip().upper()
+    has_as_select = re.search(r"\bAS\s+SELECT\b", upper, flags=0) is not None
+
     if upper.startswith("SET SEARCH_PATH"):
         return StatementType.SET_SEARCH_PATH
     if upper.startswith("SET SCHEMA"):
@@ -417,15 +419,15 @@ def classify_statement(sql: str) -> StatementType:
     if upper.startswith("TRUNCATE TABLE"):
         return StatementType.TRUNCATE
     if upper.startswith("CREATE OR REPLACE TABLE"):
-        if " AS SELECT" in upper:
+        if has_as_select:
             return StatementType.CREATE_TABLE_AS
         return StatementType.CREATE_TABLE
     if upper.startswith("CREATE LOCAL TEMP TABLE"):
-        if " AS SELECT" in upper:
+        if has_as_select:
             return StatementType.CREATE_TABLE_AS
         return StatementType.CREATE_TABLE
     if upper.startswith("CREATE TABLE"):
-        if " AS SELECT" in upper:
+        if has_as_select:
             return StatementType.CREATE_TABLE_AS
         return StatementType.CREATE_TABLE
     if upper.startswith("CREATE OR REPLACE VIEW") or upper.startswith("CREATE VIEW"):

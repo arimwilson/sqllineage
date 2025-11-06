@@ -204,3 +204,9 @@ def test_parse_error_tolerance() -> None:
     result = analyze_lineage(initial, statements, AnalyzerConfig())
     assert "parse-error" in result.warnings[0][0]
 
+
+def test_ctas_with_newline_is_detected():
+    initial = InitialCatalog({QualifiedName("public","s")})
+    stmts = [Statement("CREATE TABLE t AS\nSELECT * FROM public.s")]
+    res = analyze_lineage(initial, stmts, AnalyzerConfig())
+    assert res.edges == [("public.s", "public.t")]

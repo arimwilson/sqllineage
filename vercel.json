@@ -4,6 +4,7 @@
   "outputDirectory": "web",
   "functions": {
     "api/lineage.py": {
+      "excludeFiles": "{tests/**,__tests__/**,**/*.test.py,**/test_*.py,fixtures/**,__fixtures__/**,testdata/**}"
     }
   },
   "rewrites": [

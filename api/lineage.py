@@ -237,3 +237,16 @@ def analyze() -> Response:
     out = _lineage_to_json(result)
     return _corsify(Response(response=json.dumps(out), mimetype="application/json"))
 
+# Map the function path too (Vercel passes the full path to the app)
+@app.route("/api/lineage", methods=["OPTIONS"])
+def options_lineage():
+    return _corsify(Response(status=204))
+
+@app.route("/api/lineage", methods=["GET"])
+def health_alias():
+    return health()
+
+@app.route("/api/lineage", methods=["POST"])
+def analyze_alias():
+    return analyze()
+

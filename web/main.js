@@ -289,7 +289,7 @@ async function renderGraph(data) {
 
   graphPlaceholder.classList.add('hidden');
   graphContainer.style.background = '#020617';
-  sigmaRenderer = new window.sigma.Sigma(graph, graphContainer, {
+  sigmaRenderer = new window.sigma(graph, graphContainer, {
     renderEdgeLabels: true,
     minCameraRatio: 0.1,
     maxCameraRatio: 2,
